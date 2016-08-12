@@ -1,29 +1,30 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <groupId>org.codehaus.sonar-plugins.cxx</groupId>
+  <groupId>org.sonarsource.sonar-plugins.cxx</groupId>
   <artifactId>custom-checks-plugin</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>sonar-plugin</packaging>
-  
+
   <name>Custom C++ Rules</name>
   <description>Custom C++ Rules</description>
-  
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <sonar.version>5.6</sonar.version>
   </properties>
 
   <dependencies>
     <dependency>
-      <groupId>org.codehaus.sonar</groupId>
+      <groupId>org.sonarsource.sonarqube</groupId>
       <artifactId>sonar-plugin-api</artifactId>
-      <version>4.5.2</version>
+      <version>${sonar.version}</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.codehaus.sonar-plugins.cxx</groupId>
+      <groupId>org.sonarsource.sonarqube-plugins.cxx</groupId>
       <artifactId>sonar-cxx-plugin</artifactId>
       <type>sonar-plugin</type>
-      <version>0.9.5-SNAPSHOT</version>
+      <version>0.9.7-SNAPSHOT</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -43,9 +44,9 @@
   <build>
     <plugins>
       <plugin>
-        <groupId>org.codehaus.sonar</groupId>
+        <groupId>org.sonarsource.sonar-packaging-maven-plugin</groupId>
         <artifactId>sonar-packaging-maven-plugin</artifactId>
-        <version>1.12.1</version>
+        <version>1.16</version>
         <extensions>true</extensions>
         <configuration>
           <pluginClass>org.sonar.cxx.MyCustomRulesPlugin</pluginClass>
