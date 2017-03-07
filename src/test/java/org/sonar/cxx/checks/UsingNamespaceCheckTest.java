@@ -1,24 +1,23 @@
 package org.sonar.cxx.checks;
 
-import java.io.File;
-
-import org.junit.Rule;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import org.junit.Test;
 import org.sonar.cxx.CxxAstScanner;
-import org.sonar.cxx.checks.UsingNamespaceCheck;
 import org.sonar.squidbridge.api.SourceFile;
-import org.sonar.squidbridge.checks.CheckMessagesVerifierRule;
+import org.sonar.squidbridge.checks.CheckMessagesVerifier;
 
 public class UsingNamespaceCheckTest {
 
-  @Rule
-  public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
-
   @Test
-  public void detected() {
-    SourceFile file = CxxAstScanner.scanSingleFile(new File("src/test/resources/checks/UsingNamespaceCheck.cc"), new UsingNamespaceCheck());
-    checkMessagesVerifier.verify(file.getCheckMessages())
-    .next().atLine(1).withMessage("Using namespace are not allowed.");
-  }
+  public void check() throws UnsupportedEncodingException, IOException {
+    UsingNamespaceCheck check = new UsingNamespaceCheck();
 
+    CxxFileTester tester = CxxFileTesterHelper.CreateCxxFileTester("src/test/resources/checks/UsingNamespaceCheck.cc", ".");
+    SourceFile file = CxxAstScanner.scanSingleFile(tester.cxxFile, tester.sensorContext, check);
+
+    CheckMessagesVerifier.verify(file.getCheckMessages())
+      .next().atLine(1).withMessage("Using namespace are not allowed.")
+      .noMore();
+  }
 }
