@@ -10,7 +10,7 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <sonar.version>8.6.1.40680</sonar.version>
+    <sonar.version>8.7.1.42226</sonar.version>
   </properties>
 
   <dependencies>
