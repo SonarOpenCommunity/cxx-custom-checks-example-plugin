@@ -1,23 +1,24 @@
 package org.sonar.cxx.checks;
 
+import com.sonar.cxx.sslr.api.AstNode;
+import com.sonar.cxx.sslr.api.Grammar;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
+import org.sonar.cxx.parser.CxxGrammarImpl;
 import org.sonar.cxx.squidbridge.annotations.ActivatedByDefault;
 import org.sonar.cxx.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.cxx.squidbridge.checks.SquidCheck;
-import com.sonar.cxx.sslr.api.AstNode;
-import com.sonar.cxx.sslr.api.Grammar;
-import org.sonar.cxx.parser.CxxGrammarImpl;
+import org.sonar.cxx.tag.Tag;
 
 @Rule(
-    key = UsingNamespaceCheck.RULE_KEY,
-    name = "Using namespace directives are not allowed",
-    priority = Priority.BLOCKER,
-    description = "Using namespace directives are not allowed.")
-@ActivatedByDefault
+  key = "UsingNamespace",
+  priority = Priority.BLOCKER,
+  name = "Using namespace directives are not allowed",
+  tags = {Tag.CONVENTION})
 @SqaleConstantRemediation("5min")
+@ActivatedByDefault
 public class UsingNamespaceCheck extends SquidCheck<Grammar> {
-  public static final String RULE_KEY = "UsingNamespace";
+
   @Override
   public void init() {
     subscribeTo(CxxGrammarImpl.usingDirective);
