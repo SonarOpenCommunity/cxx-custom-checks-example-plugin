@@ -12,7 +12,7 @@
 
     <!-- use the same values as the cxx plugin you like to write an extension for -->
     <sonar.version>9.9.0.65466</sonar.version>
-    <sonar.plugin.api.version>9.14.0.375</sonar.plugin.api.version>
+    <sonar.plugin.api.version>10.6.0.2114</sonar.plugin.api.version>
     <sonarQubeMinVersion>8.9</sonarQubeMinVersion>
 
     <!-- dependencies -->
