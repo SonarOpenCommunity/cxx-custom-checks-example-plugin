@@ -1,0 +1,11 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: org.sonarsource.sonarqube:sonar-plugin-api
+    versions:
+    - 8.7.0.41497
