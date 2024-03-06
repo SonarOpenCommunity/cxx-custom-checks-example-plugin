@@ -1,23 +1,4 @@
-/*
- * Sonar C++ Plugin (Community)
- * Copyright (C) 2011-2016 SonarOpenCommunity
- * http://github.com/SonarOpenCommunity/sonar-cxx
- * 
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU Lesser General Public
- * License as published by the Free Software Foundation; either
- * version 3 of the License, or (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
- * Lesser General Public License for more details.
- * 
- * You should have received a copy of the GNU Lesser General Public License
- * along with this program; if not, write to the Free Software Foundation,
- * Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
- */
-package org.sonar.cxx.checks;
+package org.sonar.cxx;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -38,13 +19,13 @@ public final class CxxFileTesterHelper {
   }
 
   public static CxxFileTester create(String fileName, String basePath)
-          throws UnsupportedEncodingException, IOException {
+    throws UnsupportedEncodingException, IOException {
     return create(fileName, basePath, Charset.defaultCharset());
   }
 
   public static CxxFileTester create(String fileName, String basePath, Charset charset)
-          throws UnsupportedEncodingException, IOException {
-    CxxFileTester tester = new CxxFileTester();
+    throws UnsupportedEncodingException, IOException {
+    var tester = new CxxFileTester();
 
     tester.context = SensorContextTester.create(new File(basePath));
     tester.cxxFile = createInputFile(fileName, basePath, charset);
@@ -54,7 +35,7 @@ public final class CxxFileTesterHelper {
   }
 
   private static DefaultInputFile createInputFile(String fileName, String basePath, Charset charset) throws IOException {
-    TestInputFileBuilder fb = TestInputFileBuilder.create("", fileName);
+    var fb = TestInputFileBuilder.create("", fileName);
 
     fb.setCharset(charset);
     fb.setProjectBaseDir(Path.of(basePath));
@@ -64,12 +45,12 @@ public final class CxxFileTesterHelper {
   }
 
   private static String getSourceCode(File filename, Charset defaultCharset) throws IOException {
-    try (BOMInputStream bomInputStream = new BOMInputStream(new FileInputStream(filename),
-            ByteOrderMark.UTF_8,
-            ByteOrderMark.UTF_16LE,
-            ByteOrderMark.UTF_16BE,
-            ByteOrderMark.UTF_32LE,
-            ByteOrderMark.UTF_32BE)) {
+    try (var bomInputStream = new BOMInputStream(new FileInputStream(filename),
+                                             ByteOrderMark.UTF_8,
+                                             ByteOrderMark.UTF_16LE,
+                                             ByteOrderMark.UTF_16BE,
+                                             ByteOrderMark.UTF_32LE,
+                                             ByteOrderMark.UTF_32BE)) {
       ByteOrderMark bom = bomInputStream.getBOM();
       Charset charset = bom != null ? Charset.forName(bom.getCharsetName()) : defaultCharset;
       byte[] bytes = bomInputStream.readAllBytes();
