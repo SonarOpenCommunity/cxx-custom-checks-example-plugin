@@ -20,38 +20,60 @@
 package org.sonar.cxx.checks;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.nio.file.Files;
+import java.nio.charset.Charset;
+import java.nio.file.Path;
+import org.apache.commons.io.ByteOrderMark;
+import org.apache.commons.io.input.BOMInputStream;
 import org.sonar.api.batch.fs.internal.DefaultInputFile;
+import org.sonar.api.batch.fs.internal.TestInputFileBuilder;
 import org.sonar.api.batch.sensor.internal.SensorContextTester;
 
-/**
- *
- * @author jocs
- */
-public class CxxFileTesterHelper {
-  
-  public static CxxFileTester CreateCxxFileTester(String fileName, String basePath) throws UnsupportedEncodingException, IOException {
-    CxxFileTester tester = new CxxFileTester();
-    tester.sensorContext = SensorContextTester.create(new File(basePath));
+public final class CxxFileTesterHelper {
 
-    String content = new String(Files.readAllBytes(new File(tester.sensorContext.fileSystem().baseDir(), fileName).toPath()), "UTF-8");
-    tester.sensorContext.fileSystem().add(new DefaultInputFile("myProjectKey", fileName).initMetadata(content));
-    tester.cxxFile = tester.sensorContext.fileSystem().inputFile(tester.sensorContext.fileSystem().predicates().hasPath(fileName));
-    
+  private CxxFileTesterHelper() {
+    // utility class
+  }
+
+  public static CxxFileTester create(String fileName, String basePath)
+          throws UnsupportedEncodingException, IOException {
+    return create(fileName, basePath, Charset.defaultCharset());
+  }
+
+  public static CxxFileTester create(String fileName, String basePath, Charset charset)
+          throws UnsupportedEncodingException, IOException {
+    CxxFileTester tester = new CxxFileTester();
+
+    tester.context = SensorContextTester.create(new File(basePath));
+    tester.cxxFile = createInputFile(fileName, basePath, charset);
+    tester.context.fileSystem().add(tester.cxxFile);
+
     return tester;
   }
-  
-  public static CxxFileTester CreateCxxFileTester(String fileName, String basePath, String encoding) throws UnsupportedEncodingException, IOException {
-    CxxFileTester tester = new CxxFileTester();
-    tester.sensorContext = SensorContextTester.create(new File(basePath));
 
-    String content = new String(Files.readAllBytes(new File(tester.sensorContext.fileSystem().baseDir(), fileName).toPath()), encoding);
-    tester.sensorContext.fileSystem().add(new DefaultInputFile("myProjectKey", fileName).initMetadata(content));
-    tester.cxxFile = tester.sensorContext.fileSystem().inputFile(tester.sensorContext.fileSystem().predicates().hasPath(fileName));
-    
-    return tester;
+  private static DefaultInputFile createInputFile(String fileName, String basePath, Charset charset) throws IOException {
+    TestInputFileBuilder fb = TestInputFileBuilder.create("", fileName);
+
+    fb.setCharset(charset);
+    fb.setProjectBaseDir(Path.of(basePath));
+    fb.setContents(getSourceCode(Path.of(basePath, fileName).toFile(), charset));
+
+    return fb.build();
   }
-  
+
+  private static String getSourceCode(File filename, Charset defaultCharset) throws IOException {
+    try (BOMInputStream bomInputStream = new BOMInputStream(new FileInputStream(filename),
+            ByteOrderMark.UTF_8,
+            ByteOrderMark.UTF_16LE,
+            ByteOrderMark.UTF_16BE,
+            ByteOrderMark.UTF_32LE,
+            ByteOrderMark.UTF_32BE)) {
+      ByteOrderMark bom = bomInputStream.getBOM();
+      Charset charset = bom != null ? Charset.forName(bom.getCharsetName()) : defaultCharset;
+      byte[] bytes = bomInputStream.readAllBytes();
+      return new String(bytes, charset);
+    }
+  }
 }

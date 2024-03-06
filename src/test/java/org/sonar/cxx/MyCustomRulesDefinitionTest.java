@@ -10,8 +10,8 @@ public class MyCustomRulesDefinitionTest {
   @Test
   public void test() {
     MyCustomRulesDefinition definition = new MyCustomRulesDefinition();
-    assertThat(definition.repositoryName()).isEqualTo("Repository");
-    assertThat(definition.repositoryKey()).isEqualTo("repo");
+    assertThat(definition.repositoryName()).isEqualTo("Custom Repository");
+    assertThat(definition.repositoryKey()).isEqualTo("customrepo");
     assertThat(definition.checkClasses().length).isEqualTo(1);
   }
 

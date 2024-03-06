@@ -1,16 +1,13 @@
 package org.sonar.cxx;
+import org.sonar.api.Plugin;
 
-import java.util.List;
+public class MyCustomRulesPlugin implements Plugin {
 
-import org.sonar.api.SonarPlugin;
-
-import com.google.common.collect.ImmutableList;
-
-public class MyCustomRulesPlugin extends SonarPlugin {
-  
-  @SuppressWarnings("rawtypes")
   @Override
-  public List getExtensions() {
-    return ImmutableList.of(MyCustomRulesDefinition.class);
+  public void define(Context context) {
+    context.addExtension(
+            MyCustomRulesDefinition.class
+    );
   }
+
 }
