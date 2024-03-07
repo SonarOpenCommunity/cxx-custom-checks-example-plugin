@@ -10,12 +10,16 @@ import org.sonar.cxx.squidbridge.annotations.SqaleConstantRemediation;
 import org.sonar.cxx.squidbridge.checks.SquidCheck;
 import org.sonar.cxx.tag.Tag;
 
+// In case you are adding a .html description in resources, the .html file name should match the rule key.
+// In this sample the name must be 'UsingNamespace.html'.
 @Rule(
   key = "UsingNamespace",
-  priority = Priority.BLOCKER,
-  name = "Using namespace directives are not allowed",
-  tags = {Tag.CONVENTION},
-  description = "Using namespace directives are not allowed.")
+   priority = Priority.BLOCKER,
+   name = "Using namespace directives are not allowed",
+   tags = {Tag.CONVENTION}
+// second possibility to add a rule description:
+//,description = "Using namespace directives are not allowed."
+)
 @SqaleConstantRemediation("5min")
 @ActivatedByDefault
 public class UsingNamespaceCheck extends SquidCheck<Grammar> {
