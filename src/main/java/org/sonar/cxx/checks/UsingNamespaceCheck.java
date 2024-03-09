@@ -14,7 +14,8 @@ import org.sonar.cxx.tag.Tag;
   key = "UsingNamespace",
   priority = Priority.BLOCKER,
   name = "Using namespace directives are not allowed",
-  tags = {Tag.CONVENTION})
+  tags = {Tag.CONVENTION},
+  description = "Using namespace directives are not allowed.")
 @SqaleConstantRemediation("5min")
 @ActivatedByDefault
 public class UsingNamespaceCheck extends SquidCheck<Grammar> {
