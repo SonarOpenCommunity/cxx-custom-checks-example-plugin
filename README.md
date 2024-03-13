@@ -19,16 +19,31 @@ Writing custom rules for CXX is a six-step process:
   * [sonar-plugin-api](https://github.com/SonarSource/sonar-plugin-api?tab=readme-ov-file#sonar-plugin-api) describes changes to the API.
 * Put a dependency on the API of the [cxx plugin](https://github.com/SonarOpenCommunity/sonar-cxx). The _cxx plugin_ must be built locally with _Maven_ so that it is available in the local _Maven Repository_ and can be used as a dependency in the custom plugin.
 * Create as many custom rules as required. The rules must be derived from [CustomCxxRulesDefinition](https://github.com/SonarOpenCommunity/sonar-cxx/blob/master/sonar-cxx-plugin/src/main/java/org/sonar/plugins/cxx/CustomCxxRulesDefinition.java).
+  * the HTML description(s) must be created in `/org/sonar/l10n/cxx/rules/{repositoryKey}`
 * Generate the _SonarQube_ custom rules plugin (jar file).
 * Place this jar file in the `SONARQUBE_HOME/extensions/plugins` directory.
 * Restart _SonarQube Server_.
 
 The description [Plugin Basics](https://docs.sonarsource.com/sonarqube/latest/extension-guide/developing-a-plugin/plugin-basics/) is a good starting point for writing your own extensions. In addition, [Adding Coding Rules](https://docs.sonarsource.com/sonarqube/latest/extension-guide/adding-coding-rules/) gives further useful hints.
 
-The existing _CXX rules_ can be used as a template for the new rules:
+The existing _CXX rules_ can be used as a template for the new rules:<br>
 https://github.com/SonarOpenCommunity/sonar-cxx/tree/master/cxx-checks/src/main/java/org/sonar/cxx/checks
 
-**Sample:**
+**C++ sample to verify:**
+
+```C++
+using namespace std;
+
+void foo()
+{
+}
+```
+**Resulting AST:**
+
+![grafik](https://github.com/SonarOpenCommunity/sonar-cxx/assets/6077367/88c41af8-6f0d-4725-802f-81af48b1b2c8)
+
+**Custom Rule Plugin sample:**
+
 ```Java
 public final class MyCustomRulesPlugin implements Plugin {
 
@@ -44,12 +59,14 @@ public class MyCustomRulesDefinition extends CustomCxxRulesDefinition {
 
   @Override
   public String repositoryName() {
-    return "MyCustomCxxRepository";
+    return "Custom CXX";
   }
 
   @Override
   public String repositoryKey() {
-    return "mycustomcxxrepo";
+    // The html descriptions for the rules of repository must be stored in the path '/org/sonar/l10n/cxx/rules/mycxx'.
+    // If the return value of 'repositoryKey' is changed, the storage location in 'resources' must also be adjusted.
+    return "mycxx";
   }
 
   @SuppressWarnings("rawtypes")
@@ -61,11 +78,16 @@ public class MyCustomRulesDefinition extends CustomCxxRulesDefinition {
   }
 }
 
+// In case you are adding a .html description in resources, the .html file name should match the rule key.
+// In this sample the name must be 'UsingNamespace.html'.
 @Rule(
   key = "UsingNamespace",
-  priority = Priority.BLOCKER,
-  name = "Using namespace directives are not allowed",
-  tags = {Tag.CONVENTION})
+   priority = Priority.BLOCKER,
+   name = "Using namespace directives are not allowed",
+   tags = {Tag.CONVENTION}
+// second possibility to add a rule description:
+//,description = "Using namespace directives are not allowed."
+)
 @SqaleConstantRemediation("5min")
 @ActivatedByDefault
 public class UsingNamespaceCheck extends SquidCheck<Grammar> {
@@ -80,4 +102,5 @@ public class UsingNamespaceCheck extends SquidCheck<Grammar> {
     getContext().createLineViolation(this, "Using namespace are not allowed.", node);
   }
 }
+
 ```
