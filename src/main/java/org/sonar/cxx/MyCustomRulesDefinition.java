@@ -7,12 +7,14 @@ public class MyCustomRulesDefinition extends CustomCxxRulesDefinition {
 
   @Override
   public String repositoryName() {
-    return "MyCustomCxxRepository";
+    return "Custom CXX";
   }
 
   @Override
   public String repositoryKey() {
-    return "mycustomcxxrepo";
+    // The html descriptions for the rules of repository must be stored in the path '/org/sonar/l10n/cxx/rules/mycxx'.
+    // If the return value of 'repositoryKey' is changed, the storage location in 'resources' must also be adjusted.
+    return "mycxx";
   }
 
   @SuppressWarnings("rawtypes")
