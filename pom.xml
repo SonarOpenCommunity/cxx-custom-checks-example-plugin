@@ -13,7 +13,7 @@
     <!-- use the same values as the cxx plugin you like to write an extension for -->
     <sonar.version>9.9.0.65466</sonar.version>
     <sonar.plugin.api.version>9.14.0.375</sonar.plugin.api.version>
-    <sonarQubeMinVersion>8.9</sonarQubeMinVersion>
+    <pluginApiMinVersion>8.9</pluginApiMinVersion>
 
     <!-- dependencies -->
     <junit-jupiter.version>5.10.2</junit-jupiter.version>
@@ -89,6 +89,7 @@
           <pluginClass>org.sonar.cxx.MyCustomRulesPlugin</pluginClass>
           <basePlugin>cxx</basePlugin>
           <pluginKey>mycustomcxxchecks</pluginKey>
+          <pluginApiMinVersion>${pluginApiMinVersion}</pluginApiMinVersion>
         </configuration>
       </plugin>
 
