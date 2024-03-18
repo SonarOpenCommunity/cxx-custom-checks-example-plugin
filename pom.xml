@@ -24,7 +24,7 @@
 
     <!-- plugins -->
     <java.version>11</java.version>
-    <maven-compiler.version>3.12.1</maven-compiler.version>
+    <maven-compiler.version>3.13.0</maven-compiler.version>
     <sonar-packaging-maven.version>1.23.0.740</sonar-packaging-maven.version>
 
   </properties>
