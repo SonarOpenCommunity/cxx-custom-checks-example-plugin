@@ -17,7 +17,7 @@
 
     <!-- dependencies -->
     <junit-jupiter.version>5.10.2</junit-jupiter.version>
-    <assertj-core.version>3.25.3</assertj-core.version>
+    <assertj-core.version>3.26.0</assertj-core.version>
 
     <!-- must fit to the cxx plugin version (local build) -->
     <sonar-cxx-plugin.version>2.1.2-SNAPSHOT</sonar-cxx-plugin.version>
