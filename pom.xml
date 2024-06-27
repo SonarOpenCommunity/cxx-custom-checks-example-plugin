@@ -16,7 +16,7 @@
     <sonarQubeMinVersion>8.9</sonarQubeMinVersion>
 
     <!-- dependencies -->
-    <junit-jupiter.version>5.10.2</junit-jupiter.version>
+    <junit-jupiter.version>5.10.3</junit-jupiter.version>
     <assertj-core.version>3.25.3</assertj-core.version>
 
     <!-- must fit to the cxx plugin version (local build) -->
